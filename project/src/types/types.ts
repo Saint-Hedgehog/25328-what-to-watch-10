@@ -31,10 +31,6 @@ type DataFromServer = {
   filmsData: FilmDataType[] & string,
 }
 
-type formDataSubmitType = {
-  rating: number,
-  comment: string
-}
 
 type LogoProps = {
   isInFooter?: boolean
@@ -59,14 +55,24 @@ type CommentDataType = {
   }
 };
 
+type InitialStateType = {
+  selectedGenre: string,
+  visibleFilms: number
+};
+
+type FiltersElementPropsType = {
+  validHash: boolean
+}
+
 export type {
   FilmDataType,
   FilmsDataPropsType,
   FilmDataPropsType,
   DataFromServer,
-  formDataSubmitType,
   LogoProps,
   HeaderPropsType,
   FilmCardForCatalogPropsType,
   CommentDataType,
+  InitialStateType,
+  FiltersElementPropsType,
 };

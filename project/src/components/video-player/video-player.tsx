@@ -8,7 +8,7 @@ type Props = {
 
 function VideoPlayer({width, height, poster, src, videoRef}: Props) {
   return (
-    <video width={width} height={height} poster={poster} ref={videoRef} muted>
+    <video width={width} height={height} poster={poster} ref={videoRef} muted data-testid='video'>
       <source src={src} />
     </video>
   );

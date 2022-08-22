@@ -67,6 +67,7 @@ function AddReviewForm() {
                   id={`star-${star}`}
                   type='radio' name='rating'
                   value={star}
+                  data-testid="rating"
                 />
                 <label
                   className='rating__label'

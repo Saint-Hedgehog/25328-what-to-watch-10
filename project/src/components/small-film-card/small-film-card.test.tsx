@@ -1,55 +1,47 @@
-import {render, screen} from '@testing-library/react';
-import { createMemoryHistory } from 'history';
+import {Routes, Route} from 'react-router-dom';
+import {Action} from 'redux';
 import {Provider} from 'react-redux';
+import thunk from 'redux-thunk';
+import {ThunkDispatch} from '@reduxjs/toolkit';
+import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {makeFakeFilm, makeFakeFilmComment, makeFakeFilms, makeFakeUser} from '../../utils/mocks';
-import SmallFilmCard from './small-film-card';
-import HistoryRouter from '../../hocs/history-router/history-router';
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import {AnyAction} from '@reduxjs/toolkit';
+import { createMemoryHistory } from 'history';
+import HistoryRouter from '../../hocs/history-router/history-router';
+import {AppRoute, AuthorizationStatus, DEFAULT_GANRE} from '../../const';
+import {makeFakeFilm, makeFakeFilms, makeFakeUser} from '../../utils/mocks';
 import {State} from '../../types/state';
-
-import { AppRoute, AuthorizationStatus, CommentSendingStatus, DEFAULT_GANRE } from '../../const';
+import {createAPI} from '../../services/api';
+import SmallFilmCard from './small-film-card';
 import MainPage from '../main-page/main-page';
-import { Routes, Route } from 'react-router-dom';
-import { redirect } from '../../store/middlewares/redirect';
 
+const api = createAPI();
 const history = createMemoryHistory();
-
-// const middlewares = [redirect];
-// const mockStore = configureMockStore<State, AnyAction>(middlewares);
-// const store = mockStore();
 const fakeFilm = makeFakeFilm(1);
 const fakeFilms = makeFakeFilms();
 const fakeUser = makeFakeUser();
-const fakeComments = makeFakeFilmComment();
-const mockStore = configureMockStore();
+const middlewares = [thunk.withExtraArgument(api)];
+const mockStore = configureMockStore<
+      State,
+      Action,
+      ThunkDispatch<State, typeof api, Action>
+    >(middlewares);
 const store = mockStore({
-  // FILMS: {films: [film], isDataLoading: false},
-  // FILM: {promoFilm: film, film: film, filmComments: [], similarFilms: [], isDataLoading: false},
-  // GENRE: {genre: INITAL_FILMS_GENRE, renderedFilmCount: CARDS_PER_STEP},
-  // USER: {authorizationStatus: AuthorizationStatus.NoAuth, error: null},
-  // ADD_REVIEW: {isDataLoading: false, reviewSubmited: false},
-  // FAVORITE: { favoriteFilms: [film], isDataLoading: false},
-  User: {user: fakeUser, error: null, isFetching: false},
-  Films: {genre: DEFAULT_GANRE, films: fakeFilms, isDataLoaded: false, error: null},
-  Film: {film: fakeFilm, isFetching: false, error: null},
-  Comments: {comments: fakeComments, isFetching: false},
-  SendingComment: {isFetching: false, error: null, commentSendingStatus: CommentSendingStatus.Unknown,},
+  USER: {user: fakeUser, error: null, isFetching: false},
+  FILMS: {genre: DEFAULT_GANRE, films: fakeFilms, isDataLoaded: false, error: null},
+  FILM: {film: fakeFilm, isFetching: false, error: null},
   PROMO: {film: fakeFilm, isFetching: false, error: null},
-  Favorite: {films: fakeFilms, isFetching: false, error: null},
-  Auth: {authorizationStatus: AuthorizationStatus.Auth, isFetching: false},
-  Similar: {similarFilms: fakeFilms, isFetching: false},
+  FAVORITE: {films: fakeFilms, isFetching: false, error: null},
+  AUTH: {authorizationStatus: AuthorizationStatus.Auth, isFetching: false},
 });
 
 describe('Компонент: SmallFilmCard', () => {
-  // beforeAll(() => {
-  //   window.HTMLMediaElement.prototype.load = jest.fn();
-  // });
-  history.push(AppRoute.Main);
-  window.HTMLMediaElement.prototype.play = () => Promise.resolve();
-  window.HTMLMediaElement.prototype.pause = jest.fn();
-  window.HTMLMediaElement.prototype.load = jest.fn();
+  beforeEach(() => {
+    history.push(AppRoute.Main);
+    window.HTMLMediaElement.prototype.play = () => Promise.resolve();
+    window.HTMLMediaElement.prototype.pause = jest.fn();
+    window.HTMLMediaElement.prototype.load = jest.fn();
+  });
 
   it('должен отображать правильно', () => {
     render(
@@ -67,19 +59,20 @@ describe('Компонент: SmallFilmCard', () => {
   });
 
   it('когда пользователь нажимает на "Film card", следует перенаправлять', async () => {
-    jest.fn('../video-player/video-player', () => <div data-testid="video-player">for click</div>);
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
           <Routes>
             <Route path={AppRoute.Main} element={<MainPage />} />
-            <Route path={AppRoute.Film} element={<h1>Mock Film Screen</h1>}/>
+            <Route path={AppRoute.Film}>
+              <Route path={AppRoute.DefaultFilm} element={<h1>Mock Film Screen</h1>} />
+            </Route>
           </Routes>
-        < /HistoryRouter>
+        </HistoryRouter>
       </Provider>,
     );
 
-    await userEvent.click(screen.getByTestId('video-player'));
+    await userEvent.click(screen.getByTitle(`/films/${fakeFilm.id}/overview`));
 
     expect(screen.getByText(/Mock Film Screen/i)).toBeInTheDocument();
   });

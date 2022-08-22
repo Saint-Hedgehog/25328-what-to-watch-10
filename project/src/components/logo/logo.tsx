@@ -16,7 +16,7 @@ function Logo({isFooter}: Props) {
   return (
     <div className="logo">
       {isBaseName ? (
-        <Link to='#' style={{pointerEvents: 'none'}} className={linkClass}>
+        <Link to='/' title='/main' style={{pointerEvents: 'none'}} className={linkClass}>
           <span
             className="logo__letter logo__letter--1"
             data-testid="logo-letter-1"
@@ -27,7 +27,7 @@ function Logo({isFooter}: Props) {
           <span className="logo__letter logo__letter--3">W</span>
         </Link>
       ) : (
-        <Link to="/" className={linkClass}>
+        <Link to="/" title='/main' className={linkClass}>
           <span className="logo__letter logo__letter--1">W</span>
           <span className="logo__letter logo__letter--2">T</span>
           <span className="logo__letter logo__letter--3">W</span>

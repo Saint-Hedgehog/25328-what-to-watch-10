@@ -12,7 +12,7 @@ const SCORE_MAX_COUNT = 999;
 const RELEASED_DATE_START = 1960;
 const RELEASED_DATE_MAX = 62;
 const FAKE_ARRAY_LENGTH = 16;
-const FAKE_GENRES_LENGTH = 9;
+const FAKE_GENRES_LENGTH = 10;
 
 const generateRandomName = () => `${faker.name.firstName()} ${faker.name.lastName()}`;
 

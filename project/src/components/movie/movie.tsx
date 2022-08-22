@@ -9,7 +9,7 @@ import {getError} from '../../store/film-process/selectors';
 import {getFilm} from '../../store/film-process/selectors';
 import {resetError} from '../../store/film-process/film-process';
 import {getLoadedFilmsStatus} from '../../store/films-process/selectors';
-import {getFavoriteFilms, getFavoriteFilmsLength} from '../../store/my-favorite-film-process/selectors';
+import {getFavoriteFilmsLength} from '../../store/my-favorite-film-process/selectors';
 import Spinner from '../spinner/spinner';
 import SimilarFilms from '../similar-films/similar-films';
 import Tabs from './tabs/tabs';

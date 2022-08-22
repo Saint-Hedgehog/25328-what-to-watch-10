@@ -50,7 +50,13 @@ function GenreList() {
             'catalog__genres-item--active': genre === selectedGenre,
           })}
         >
-          <Link to={`#${genre}`} className="catalog__genres-link">{genre}</Link>
+          <Link
+            to={`#${genre}`}
+            className="catalog__genres-link"
+            data-testid="genre"
+          >
+            {genre}
+          </Link>
         </li>
       ))}
     </ul>

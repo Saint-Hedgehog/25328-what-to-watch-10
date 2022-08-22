@@ -4,6 +4,7 @@ import {createMemoryHistory} from 'history';
 import HistoryRouter from '../../hocs/history-router/history-router';
 import userEvent from '@testing-library/user-event';
 import Logo from './logo';
+import { AppRoute } from '../../const';
 
 const history = createMemoryHistory();
 
@@ -32,7 +33,7 @@ describe('Компонент: Logo', () => {
     render(
       <HistoryRouter history={history}>
         <Routes>
-          <Route path="/" element={<h1>This is main page</h1>} />
+          <Route path={AppRoute.Main} element={<h1>This is main page</h1>} />
           <Route path='*' element={<Logo />} />
         </Routes>
       </HistoryRouter>);

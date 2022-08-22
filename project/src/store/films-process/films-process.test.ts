@@ -1,16 +1,12 @@
 import { DEFAULT_GANRE } from '../../const';
 import {makeFakeFilms} from '../../utils/mocks';
-import {makeFakeGenres} from '../../utils/mocks';
 import {
   filmsData,
   loadFilmsRequest,
   loadFilmsSuccess,
-  loadFilmsError,
-  changeGenre
-} from './films-process';
+  loadFilmsError} from './films-process';
 
 const fakeFilms = makeFakeFilms();
-const fakeGenres = makeFakeGenres();
 
 describe('Редьюсер: FilmsData', () => {
   it('без дополнительных параметров должен возвращать начальное состояние', () => {
@@ -70,22 +66,6 @@ describe('Редьюсер: FilmsData', () => {
         films: fakeFilms,
         isDataLoaded: false,
         error: {error: 'Sorry cant find that!'},
-      });
-  });
-
-  it('должен сохранить genre в store', () => {
-    const state = {
-      genre: DEFAULT_GANRE,
-      films: fakeFilms,
-      isDataLoaded: true,
-      error: null,
-    };
-    expect(filmsData.reducer(state, changeGenre({genres: fakeGenres})))
-      .toEqual({
-        genre: fakeGenres,
-        films: fakeFilms,
-        isDataLoaded: false,
-        error: null,
       });
   });
 });

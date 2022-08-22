@@ -30,8 +30,13 @@ function SmallFilmCard({name, posterImage, id, videoLink}: Props) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className="small-film-card catalog__films-card"
+      data-testid="film-card"
     >
-      <Link to={`${AppRoute.Film}/${id}${AppRoute.Overview}`}>
+      <Link
+        className="small-film-card__link"
+        to={`${AppRoute.Film}/${id}${AppRoute.Overview}`}
+        title={`${AppRoute.Film}/${id}${AppRoute.Overview}`}
+      >
         <div className="small-film-card__image">
           <VideoPlayer
             poster={posterImage}
@@ -41,15 +46,11 @@ function SmallFilmCard({name, posterImage, id, videoLink}: Props) {
             videoRef={videoRef}
           />
         </div>
-      </Link>
-      <h3 className="small-film-card__title">
-        <Link
-          className="small-film-card__link"
-          to={`${AppRoute.Film}/${id}${AppRoute.Overview}`}
-        >
+
+        <h3 className="small-film-card__title">
           {name}
-        </Link>
-      </h3>
+        </h3>
+      </Link>
     </article>
   );
 }

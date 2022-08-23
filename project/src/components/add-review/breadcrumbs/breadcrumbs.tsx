@@ -1,9 +1,13 @@
 import {Link} from 'react-router-dom';
-import {FilmDataPropsType} from '../../../types/types';
-import {AppRoute, TabNames} from '../../utils/const';
+import {AppRoute, TabNames} from '../../../const';
+import {Film} from '../../../types/film';
 
-const BreadcrumbsElement = ({ filmData }: FilmDataPropsType): JSX.Element => {
-  const { id, name } = filmData;
+type Props = {
+  film: Film;
+};
+
+const Breadcrumbs = ({film}: Props) => {
+  const {id, name} = film;
   return (
     <nav className="breadcrumbs">
       <ul className="breadcrumbs__list">
@@ -18,4 +22,4 @@ const BreadcrumbsElement = ({ filmData }: FilmDataPropsType): JSX.Element => {
   );
 };
 
-export default BreadcrumbsElement;
+export default Breadcrumbs;

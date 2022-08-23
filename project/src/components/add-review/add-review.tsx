@@ -1,31 +1,46 @@
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {useParams} from 'react-router-dom';
-import {FilmDataType} from '../../types/types';
-import {SubmitCommentForm} from './submit-comment-form/submit-comment-form';
-import HeaderElement from '../layout/header-layout';
-import SignOut from '../header/user-block/sign-out';
-import BreadcrumbsElement from './breadcrumbs/breadcrumbs';
+import {useAppDispatch, useAppSelector} from '../../hooks/hooks';
+import {loadFilmByIdAction} from '../../store/api-actions';
+import {getLoadedFilmsStatus} from '../../store/films-process/selectors';
+import {getError, getFilm} from '../../store/film-process/selectors';
 import Spinner from '../spinner/spinner';
-import {getFilm} from '../../fetch/request-to-server';
+import Logo from '../logo/logo';
+import Breadcrumbs from './breadcrumbs/breadcrumbs';
+import User from '../user/user';
+import AddReviewForm from './add-review-form/add-review-form';
+import NotFoundPage from '../not-found-page/not-found-page';
+import { resetError } from '../../store/film-process/film-process';
 
-const AddReview = () => {
-  const { id } = useParams();
-  const [filmData, setFilmData] = useState<FilmDataType | null>(null);
+function AddReview() {
+  const {id} = useParams();
+  const dispatch = useAppDispatch();
+  const film = useAppSelector(getFilm);
+  const isDataLoaded = useAppSelector(getLoadedFilmsStatus);
+  const error = useAppSelector(getError);
+
 
   useEffect(() => {
-    (async () => {
-      const data = await getFilm(Number(id));
-      setFilmData(data);
-    })();
-  }, [id]);
+    if (id) {
+      dispatch(loadFilmByIdAction(id));
+    }
+  }, [dispatch, id]);
 
-  if (filmData === null) {
-    return (
-      <Spinner />
-    );
+  useEffect(() => () => {
+    if(error) {
+      dispatch(resetError());
+    }
+  }, []);
+
+  if (error) {
+    return <NotFoundPage />;
   }
 
-  const { name, backgroundImage, posterImage }: FilmDataType = filmData;
+  if (!film || isDataLoaded) {
+    return <Spinner />;
+  }
+
+  const {backgroundImage, name, posterImage} = film;
 
   return (
     <section className="film-card film-card--full">
@@ -33,23 +48,23 @@ const AddReview = () => {
         <div className="film-card__bg">
           <img src={backgroundImage} alt={name} />
         </div>
-
         <h1 className="visually-hidden">WTW</h1>
-        <HeaderElement >
-          <BreadcrumbsElement filmData={filmData} />
-          <SignOut />
-        </HeaderElement>
-
+        <header className="page-header">
+          <Logo />
+          <Breadcrumbs film={film} />
+          <User />
+        </header>
         <div className="film-card__poster film-card__poster--small">
-          <img src={posterImage} alt={name} width="218" height="327" />
+          <img
+            src={posterImage}
+            alt={name}
+            width="218"
+            height="327"
+          />
         </div>
       </div>
-
-      <div className="add-review">
-        <SubmitCommentForm />
-      </div>
+      <AddReviewForm />
     </section>
   );
-};
-
+}
 export default AddReview;

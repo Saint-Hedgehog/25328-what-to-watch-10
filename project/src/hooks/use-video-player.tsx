@@ -21,7 +21,9 @@ const useVideoPlayer = (videoElement: React.RefObject<HTMLVideoElement>, progres
     if (videoElement && videoElement.current) {
       playerState.isPlaying
         ? videoElement.current.pause()
-        : videoElement.current.play();
+        : setTimeout(() => {
+          videoElement.current?.play();
+        }, 150);
     }
   }, [playerState.isPlaying, videoElement]);
 

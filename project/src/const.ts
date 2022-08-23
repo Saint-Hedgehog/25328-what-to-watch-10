@@ -4,12 +4,15 @@ export const ZERO = 0;
 export const COUNTE_UNIQUE_GENRES = 10;
 export const FILM_CARD_COUNT_ON_PAGE = 8;
 export const COUNT_SIMILAR_FILMS = 4;
-export const MIN_MESSAGE_LENGTH = 50;
-export const MAX_MESSAGE_LENGTH = 400;
 export const CURSOR_OFFSET_TO_CENTER = 25;
 export const RATING_STARS = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 export const EMAIL_REG_EXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 export const PASSWORD_REG_EXP = /^.*(?=.{2,})(?=.*\d)(?=.*[a-zA-Zа-яА-ЯёЁ]).*$/i;
+
+export enum MessageLength {
+  Min = 50,
+  Max = 400,
+}
 
 export enum AppRoute {
   Main = '/',

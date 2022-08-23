@@ -5,7 +5,7 @@ import {useAppDispatch, useAppSelector} from '../../../hooks/hooks';
 import {sendCommentAction} from '../../../store/api-actions';
 import {getLoadedSendingCommentData} from '../../../store/sending-comment-process/selectors';
 import {getCommentSendingStatus} from '../../../store/sending-comment-process/selectors';
-import {AppRoute, CommentSendingStatus, MAX_MESSAGE_LENGTH, MIN_MESSAGE_LENGTH, RATING_STARS} from '../../../const';
+import {AppRoute, CommentSendingStatus, MessageLength, RATING_STARS} from '../../../const';
 import {store} from '../../../store/store';
 import {resetCommentSendingStatus} from '../../../store/sending-comment-process/sending-comment-process';
 
@@ -18,8 +18,8 @@ function AddReviewForm() {
   const isFetching = useAppSelector(getLoadedSendingCommentData);
   const commentSendingStatus = useAppSelector(getCommentSendingStatus);
   const isMessageEntered =
-    reviewMessage.length >= MIN_MESSAGE_LENGTH &&
-    reviewMessage.length <= MAX_MESSAGE_LENGTH;
+    reviewMessage.length >= MessageLength.Min &&
+    reviewMessage.length <= MessageLength.Max;
   const isRatingSelected = rating.length !== 0;
   const isValidForm = isMessageEntered && isRatingSelected;
 
@@ -90,8 +90,8 @@ function AddReviewForm() {
             id="review-text"
             placeholder="Review text"
             value={reviewMessage}
-            maxLength={MAX_MESSAGE_LENGTH}
-            minLength={MIN_MESSAGE_LENGTH}
+            maxLength={MessageLength.Max}
+            minLength={MessageLength.Min}
           />
           <div className="add-review__submit">
             <button

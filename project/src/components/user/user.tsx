@@ -19,7 +19,7 @@ function User() {
     <ul className="user-block">
       <li className="user-block__item">
         {authorizationStatus === AuthorizationStatus.Auth ? (
-          <Link to={AppRoute.MyList}>
+          <Link to={AppRoute.MyList} style={{pointerEvents: prevRoute.pathname === AppRoute.MyList ? 'none' : 'auto'}}>
             <div className="user-block__avatar">
               {user && (
                 <img

@@ -1,13 +1,15 @@
 import {makeFakeFilms} from '../../utils/mocks';
-import {
-  myFavoriteFilmsProcess,
-  loadFavoriteFilmsRequest,
-  loadFavoriteFilmsSuccess,
-  loadFavoriteFilmsError,
-  changeFavoriteFilmRequest,
-  changeFavoriteFilmSuccess,
-  changeFavoriteFilmError
-} from './my-favorite-film-process';
+import { changeFavoriteFilmStatusAction, loadFavoriteFilmsAction } from '../api-actions';
+import { myFavoriteFilmsProcess } from './my-favorite-film-process';
+// import {
+//   myFavoriteFilmsProcess,
+//   loadFavoriteFilmsRequest,
+//   loadFavoriteFilmsSuccess,
+//   loadFavoriteFilmsError,
+//   changeFavoriteFilmRequest,
+//   changeFavoriteFilmSuccess,
+//   changeFavoriteFilmError
+// } from './my-favorite-film-process';
 
 const fakeFilms = makeFakeFilms();
 
@@ -29,7 +31,7 @@ describe('Редьюсер: MyFavoriteFilmsData', () => {
       error: null,
     };
     expect(
-      myFavoriteFilmsProcess.reducer(state, loadFavoriteFilmsRequest()))
+      myFavoriteFilmsProcess.reducer(state, { type: loadFavoriteFilmsAction.pending.type }))
       .toEqual({
         films: [],
         isFetching: true,
@@ -44,7 +46,7 @@ describe('Редьюсер: MyFavoriteFilmsData', () => {
       error: null,
     };
     expect(
-      myFavoriteFilmsProcess.reducer(state, loadFavoriteFilmsSuccess(fakeFilms)))
+      myFavoriteFilmsProcess.reducer(state, { type: loadFavoriteFilmsAction.fulfilled.type, payload: fakeFilms }))
       .toEqual({
         films: fakeFilms,
         isFetching: false,
@@ -59,7 +61,7 @@ describe('Редьюсер: MyFavoriteFilmsData', () => {
       error: null,
     };
     expect(
-      myFavoriteFilmsProcess.reducer(state, loadFavoriteFilmsError()))
+      myFavoriteFilmsProcess.reducer(state, { type: loadFavoriteFilmsAction.rejected.type }))
       .toEqual({
         films: fakeFilms,
         isFetching: false,
@@ -74,7 +76,7 @@ describe('Редьюсер: MyFavoriteFilmsData', () => {
       error: null,
     };
     expect(
-      myFavoriteFilmsProcess.reducer(state, changeFavoriteFilmRequest()))
+      myFavoriteFilmsProcess.reducer(state, { type: changeFavoriteFilmStatusAction.pending.type }))
       .toEqual({
         films: fakeFilms,
         isFetching: true,
@@ -89,7 +91,7 @@ describe('Редьюсер: MyFavoriteFilmsData', () => {
       error: null,
     };
     expect(
-      myFavoriteFilmsProcess.reducer(state, changeFavoriteFilmSuccess()))
+      myFavoriteFilmsProcess.reducer(state, { type: changeFavoriteFilmStatusAction.fulfilled.type }))
       .toEqual({
         films: fakeFilms,
         isFetching: false,
@@ -104,7 +106,7 @@ describe('Редьюсер: MyFavoriteFilmsData', () => {
       error: null,
     };
     expect(
-      myFavoriteFilmsProcess.reducer(state, changeFavoriteFilmError()))
+      myFavoriteFilmsProcess.reducer(state, { type: changeFavoriteFilmStatusAction.rejected.type }))
       .toEqual({
         films: fakeFilms,
         isFetching: false,

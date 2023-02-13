@@ -1,10 +1,12 @@
 import {makeFakeFilms} from '../../utils/mocks';
-import {
-  similarFilmsData,
-  loadSimilarFilmsRequest,
-  loadSimilarFilmsSuccess,
-  loadSimilarFilmsError,
-} from './similar-films-process';
+import { loadSimilarFilmsAction } from '../api-actions';
+import { similarFilmsData } from './similar-films-process';
+// import {
+//   similarFilmsData,
+//   loadSimilarFilmsRequest,
+//   loadSimilarFilmsSuccess,
+//   loadSimilarFilmsError,
+// } from './similar-films-process';
 
 const fakeFilms = makeFakeFilms();
 
@@ -22,7 +24,7 @@ describe('Редьюсер: SimilarFilmsData', () => {
       similarFilms: [],
       isFetching: false,
     };
-    expect(similarFilmsData.reducer(state, loadSimilarFilmsRequest()))
+    expect(similarFilmsData.reducer(state, { type: loadSimilarFilmsAction.pending.type }))
       .toEqual({
         similarFilms: [],
         isFetching: true,
@@ -35,7 +37,7 @@ describe('Редьюсер: SimilarFilmsData', () => {
       isFetching: true,
     };
     expect(
-      similarFilmsData.reducer(state, loadSimilarFilmsSuccess(fakeFilms)))
+      similarFilmsData.reducer(state, { type: loadSimilarFilmsAction.fulfilled.type, payload: fakeFilms }))
       .toEqual({
         similarFilms: fakeFilms,
         isFetching: false,
@@ -47,7 +49,7 @@ describe('Редьюсер: SimilarFilmsData', () => {
       similarFilms: fakeFilms,
       isFetching: true,
     };
-    expect(similarFilmsData.reducer(state, loadSimilarFilmsError()))
+    expect(similarFilmsData.reducer(state, { type: loadSimilarFilmsAction.rejected.type }))
       .toEqual({
         similarFilms: fakeFilms,
         isFetching: false,

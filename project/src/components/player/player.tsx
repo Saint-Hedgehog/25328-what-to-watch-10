@@ -95,7 +95,7 @@ function Player() {
           <div className="player__time">
             <progress
               style={{cursor: 'pointer'}}
-              onChange={(evt) => handleVideoProgress(evt)}
+              onChange={handleVideoProgress}
               className="player__progress"
               value={progress}
               max="100"

@@ -1,10 +1,12 @@
 import { DEFAULT_GANRE } from '../../const';
 import {makeFakeFilms} from '../../utils/mocks';
-import {
-  filmsData,
-  loadFilmsRequest,
-  loadFilmsSuccess,
-  loadFilmsError} from './films-process';
+import { loadFilmsAction } from '../api-actions';
+import { filmsData } from './films-process';
+// import {
+//   filmsData,
+//   loadFilmsRequest,
+//   loadFilmsSuccess,
+//   loadFilmsError} from './films-process';
 
 const fakeFilms = makeFakeFilms();
 
@@ -26,7 +28,7 @@ describe('Редьюсер: FilmsData', () => {
       isDataLoaded: false,
       error: null,
     };
-    expect(filmsData.reducer(state, loadFilmsRequest()))
+    expect(filmsData.reducer(state, { type: loadFilmsAction.pending.type }))
       .toEqual({
         genre: DEFAULT_GANRE,
         films: [],
@@ -42,7 +44,7 @@ describe('Редьюсер: FilmsData', () => {
       isDataLoaded: true,
       error: null,
     };
-    expect(filmsData.reducer(state, loadFilmsSuccess(fakeFilms)))
+    expect(filmsData.reducer(state, { type: loadFilmsAction.fulfilled.type, payload: fakeFilms }))
       .toEqual({
         genre: DEFAULT_GANRE,
         films: fakeFilms,
@@ -60,7 +62,8 @@ describe('Редьюсер: FilmsData', () => {
     };
     expect(filmsData.reducer(
       state,
-      loadFilmsError({error: 'Sorry cant find that!'})))
+      // loadFilmsError({error: 'Sorry cant find that!'})))
+      { type: loadFilmsAction.rejected.type }))
       .toEqual({
         genre: DEFAULT_GANRE,
         films: fakeFilms,

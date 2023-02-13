@@ -155,6 +155,7 @@ function Movie() {
                 <Route path="/overview" element={<MoviePageOverview film={film} />} />
                 <Route path="/details" element={<MoviePageDetails film={film} />} />
                 <Route path="/reviews" element={<MoviePageReviews />} />
+                <Route path="/*" element={<MoviePageOverview film={film} />} />
               </Routes>
             </div>
           </div>

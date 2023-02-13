@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks';
 import {changeFavoriteFilmStatusAction, loadFavoriteFilmsAction} from '../../store/api-actions';
 import {getFavoriteFilmsLength} from '../../store/my-favorite-film-process/selectors';
@@ -12,6 +12,9 @@ import {AppRoute, AuthorizationStatus} from '../../const';
 import Logo from '../logo/logo';
 import User from '../user/user';
 import Spinner from '../spinner/spinner';
+import MyListBtn from './my-list-btn';
+import React from 'react';
+import MyListLink from './my-list-link';
 
 function PromoFilm() {
   const navigate = useNavigate();
@@ -77,7 +80,7 @@ function PromoFilm() {
             />
           </div>
           <div className="film-card__desc">
-            <h2 className="film-card__title">{ name}</h2>
+            <h2 className="film-card__title">{name}</h2>
             <p className="film-card__meta">
               <span className="film-card__genre">{genre}</span>
               <span className="film-card__year">{released}</span>
@@ -93,32 +96,9 @@ function PromoFilm() {
                 </svg>
                 <span>Play</span>
               </button>
-              {authorizationStatus === AuthorizationStatus.Auth ? (
-                <button
-                  onClick={handleFavoriteButtonClick}
-                  className="btn btn--list film-card__button"
-                  type="button"
-                >
-                  { isFavorite ? (
-                    <svg viewBox="0 0 18 14" width="18" height="14">
-                      <use xlinkHref="#in-list"></use>
-                    </svg>
-                  ) : (
-                    <svg viewBox="0 0 19 20" width="19" height="20">
-                      <use xlinkHref="#add"></use>
-                    </svg>
-                  )}
-                  <span>My list</span>
-                  <span className="film-card__count">{favoriteFilmsLength}</span>
-                </button>
-              ) :
-                <Link to={AppRoute.SignIn} className="btn btn--list film-card__button" >
-                  <svg viewBox="0 0 18 14" width="18" height="14">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                  <span className="film-card__count">0</span>
-                </Link>}
+              {authorizationStatus === AuthorizationStatus.Auth
+                ? (<MyListBtn handleFavoriteButtonClick={handleFavoriteButtonClick} isFavorite={isFavorite} favoriteFilmsLength={favoriteFilmsLength} />)
+                : <MyListLink />}
             </div>
           </div>
         </div>

@@ -1,11 +1,13 @@
 import {CommentSendingStatus} from '../../const';
-import {
-  sendingCommentProcess,
-  sendCommentRequest,
-  sendCommentSuccess,
-  sendCommentError,
-  resetCommentSendingStatus
-} from './sending-comment-process';
+import { sendCommentAction } from '../api-actions';
+import { resetCommentSendingStatus, sendingCommentProcess } from './sending-comment-process';
+// import {
+//   sendingCommentProcess,
+//   sendCommentRequest,
+//   sendCommentSuccess,
+//   sendCommentError,
+//   resetCommentSendingStatus
+// } from './sending-comment-process';
 
 describe('Редьюсер: sendingCommentProcess', () => {
   it('без дополнительных параметров должен возвращать начальное состояние', () => {
@@ -25,7 +27,7 @@ describe('Редьюсер: sendingCommentProcess', () => {
       error: null,
       commentSendingStatus: CommentSendingStatus.Unknown,
     };
-    expect(sendingCommentProcess.reducer(state, sendCommentRequest()))
+    expect(sendingCommentProcess.reducer(state, { type: sendCommentAction.pending.type }))
       .toEqual({
         isFetching: true,
         error: null,
@@ -39,7 +41,7 @@ describe('Редьюсер: sendingCommentProcess', () => {
       error: null,
       commentSendingStatus: CommentSendingStatus.Unknown,
     };
-    expect(sendingCommentProcess.reducer(state, sendCommentSuccess()))
+    expect(sendingCommentProcess.reducer(state, { type: sendCommentAction.fulfilled.type }))
       .toEqual({
         isFetching: false,
         error: null,
@@ -53,9 +55,7 @@ describe('Редьюсер: sendingCommentProcess', () => {
       error: null,
       commentSendingStatus: CommentSendingStatus.Unknown,
     };
-    expect(sendingCommentProcess.reducer(
-      state,
-      sendCommentError({error: 'Error'})))
+    expect(sendingCommentProcess.reducer(state, { type: sendCommentAction.rejected.type }))
       .toEqual({
         isFetching: false,
         error: {error: 'Error'},

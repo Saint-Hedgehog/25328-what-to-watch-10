@@ -3,6 +3,7 @@ import {TailSpin} from 'react-loader-spinner';
 function Spinner() {
   return (
     <div
+      data-testid="spinner"
       style={{
         display: 'flex',
         justifyContent: 'center',

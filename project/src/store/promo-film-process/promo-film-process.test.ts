@@ -1,10 +1,12 @@
 import {makeFakeFilm} from '../../utils/mocks';
-import {
-  loadPromoFilmRequest,
-  loadPromoFilmSuccess,
-  loadPromoFilmError,
-  promoFilmData
-} from './promo-film-process';
+import { loadPromoFilmAction } from '../api-actions';
+import { promoFilmData } from './promo-film-process';
+// import {
+//   loadPromoFilmRequest,
+//   loadPromoFilmSuccess,
+//   loadPromoFilmError,
+//   promoFilmData
+// } from './promo-film-process';
 
 const fakeFilm = makeFakeFilm(1);
 
@@ -24,7 +26,7 @@ describe('Редьюсер: PromoFilmData', () => {
       isFetching: false,
       error: null,
     };
-    expect(promoFilmData.reducer(state, loadPromoFilmRequest()))
+    expect(promoFilmData.reducer(state, { type: loadPromoFilmAction.pending.type }))
       .toEqual({
         film: null,
         isFetching: true,
@@ -39,7 +41,7 @@ describe('Редьюсер: PromoFilmData', () => {
       error: null,
     };
     expect(
-      promoFilmData.reducer(state, loadPromoFilmSuccess(fakeFilm)))
+      promoFilmData.reducer(state, { type: loadPromoFilmAction.fulfilled.type, payload: fakeFilm }))
       .toEqual({
         film: fakeFilm,
         isFetching: false,
@@ -56,7 +58,7 @@ describe('Редьюсер: PromoFilmData', () => {
     expect(
       promoFilmData.reducer(
         state,
-        loadPromoFilmError({error: 'Sorry cant find that!'})))
+        { type: loadPromoFilmAction.rejected.type }))
       .toEqual({
         film: fakeFilm,
         isFetching: false,

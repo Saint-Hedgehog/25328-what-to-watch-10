@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import React from 'react';
 
 import {Link, useLocation} from 'react-router-dom';
 
@@ -37,4 +38,4 @@ function Logo({isFooter}: Props) {
   );
 }
 
-export default Logo;
+export default React.memo(Logo);

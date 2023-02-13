@@ -12,7 +12,7 @@ import {resetCommentSendingStatus} from '../../../store/sending-comment-process/
 function AddReviewForm() {
   const {id} = useParams();
   const [reviewMessage, setReviewMessage] = useState('');
-  const [rating, setRating] = useState('');
+  const [rating, setRating] = useState(0);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isFetching = useAppSelector(getLoadedSendingCommentData);
@@ -20,7 +20,7 @@ function AddReviewForm() {
   const isMessageEntered =
     reviewMessage.length >= MessageLength.Min &&
     reviewMessage.length <= MessageLength.Max;
-  const isRatingSelected = rating.length !== 0;
+  const isRatingSelected = rating !== 0;
   const isValidForm = isMessageEntered && isRatingSelected;
 
   useEffect(() => {
@@ -39,7 +39,8 @@ function AddReviewForm() {
   };
 
   const handleRatingChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    setRating(evt.target.value);
+    const {value} = evt.target;
+    setRating(Number(value));
   };
 
   const handleSubmitButtonClick = (evt: React.MouseEvent<HTMLElement>) => {

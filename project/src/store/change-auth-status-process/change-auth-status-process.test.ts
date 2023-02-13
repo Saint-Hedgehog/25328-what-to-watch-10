@@ -1,11 +1,13 @@
 import { AuthorizationStatus } from '../../const';
-import {
-  changeAuthStatusProcess,
-  checkAuthStatusRequest,
-  checkAuthStatusSuccess,
-  checkAuthStatusError,
-  changeAuthStatus
-} from './change-auth-status-process';
+import { checkAuthAction } from '../api-actions';
+import { changeAuthStatusProcess } from './change-auth-status-process';
+// import {
+//   changeAuthStatusProcess,
+//   checkAuthStatusRequest,
+//   checkAuthStatusSuccess,
+//   checkAuthStatusError,
+//   changeAuthStatus
+// } from './change-auth-status-process';
 
 describe('Редьюсер: ChangeAuthStatusProcess', () => {
   it('без дополнительных параметров должен возвращать начальное состояние', () => {
@@ -23,7 +25,7 @@ describe('Редьюсер: ChangeAuthStatusProcess', () => {
       authorizationStatus: AuthorizationStatus.Unknown,
       isFetching: false,
     };
-    expect(changeAuthStatusProcess.reducer(state, checkAuthStatusRequest()))
+    expect(changeAuthStatusProcess.reducer(state, { type: checkAuthAction.pending.type }))
       .toEqual({
         authorizationStatus: AuthorizationStatus.Unknown,
         isFetching: true,
@@ -35,7 +37,7 @@ describe('Редьюсер: ChangeAuthStatusProcess', () => {
       authorizationStatus: AuthorizationStatus.Auth,
       isFetching: true,
     };
-    expect(changeAuthStatusProcess.reducer(state, checkAuthStatusSuccess()))
+    expect(changeAuthStatusProcess.reducer(state, { type: checkAuthAction.fulfilled.type }))
       .toEqual({
         authorizationStatus: AuthorizationStatus.Auth,
         isFetching: false,
@@ -47,7 +49,7 @@ describe('Редьюсер: ChangeAuthStatusProcess', () => {
       authorizationStatus: AuthorizationStatus.Auth,
       isFetching: true,
     };
-    expect(changeAuthStatusProcess.reducer(state, checkAuthStatusError()))
+    expect(changeAuthStatusProcess.reducer(state, { type: checkAuthAction.rejected.type }))
       .toEqual({
         authorizationStatus: AuthorizationStatus.Auth,
         isFetching: false,
@@ -60,7 +62,7 @@ describe('Редьюсер: ChangeAuthStatusProcess', () => {
       isFetching: false,
     };
     expect(
-      changeAuthStatusProcess.reducer(state, changeAuthStatus(AuthorizationStatus.Auth)))
+      changeAuthStatusProcess.reducer(state, { type: checkAuthAction.fulfilled.type }))
       .toEqual({
         authorizationStatus: AuthorizationStatus.Auth,
         isFetching: false,

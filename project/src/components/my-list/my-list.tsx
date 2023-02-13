@@ -1,7 +1,7 @@
 import {useEffect, useMemo} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks';
 import {loadFavoriteFilmsAction} from '../../store/api-actions';
-import {getErrorFavoriteFilms} from '../../store/my-favorite-film-process/selectors';
+import {getErrorFavoriteFilms, getFavoriteFilmsLength} from '../../store/my-favorite-film-process/selectors';
 import {getFavoriteFilms} from '../../store/my-favorite-film-process/selectors';
 import {getLoadedFavoriteFilmsStatus} from '../../store/my-favorite-film-process/selectors';
 import User from '../user/user';
@@ -16,6 +16,7 @@ function MyList() {
   const error = useAppSelector(getErrorFavoriteFilms);
   const isFetching = useAppSelector(getLoadedFavoriteFilmsStatus);
   const dispatch = useAppDispatch();
+  const favoriteFilmsLength = useAppSelector(getFavoriteFilmsLength);
 
   useEffect(() => {
     dispatch(loadFavoriteFilmsAction());
@@ -47,7 +48,9 @@ function MyList() {
     <div className="user-page">
       <header className="page-header user-page__head">
         <Logo />
-        <h1 className="page-title user-page__title">My list</h1>
+        <h1 className="page-title user-page__title">My list
+          <span className="film-card__count">{favoriteFilmsLength}</span>
+        </h1>
         <User />
       </header>
       <section className="catalog">

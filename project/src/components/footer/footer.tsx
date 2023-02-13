@@ -1,3 +1,4 @@
+import React from 'react';
 import Logo from '../logo/logo';
 
 function Footer() {
@@ -12,4 +13,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default React.memo(Footer);

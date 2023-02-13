@@ -1,11 +1,14 @@
+import errorHandle from '../../services/error-handle';
 import {makeFakeFilm} from '../../utils/mocks';
-import {
-  filmData,
-  loadFilmByIdRequest,
-  loadFilmByIdSuccess,
-  loadFilmByIdError,
-  resetError
-} from './film-process';
+import { loadFilmByIdAction } from '../api-actions';
+import { filmData, resetError } from './film-process';
+// import {
+//   filmData,
+//   loadFilmByIdRequest,
+//   loadFilmByIdSuccess,
+//   loadFilmByIdError,
+//   resetError
+// } from './film-process';
 
 const fakeFilm = makeFakeFilm(1);
 
@@ -19,13 +22,15 @@ describe('Редьюсер: FilmData', () => {
       });
   });
 
+
   it('должен перевести isFetching в true', () => {
     const state = {
       film: null,
       isFetching: false,
       error: null,
     };
-    expect(filmData.reducer(state, loadFilmByIdRequest()))
+
+    expect(filmData.reducer(state, { type: loadFilmByIdAction.pending.type }))
       .toEqual({
         film: null,
         isFetching: true,
@@ -39,7 +44,7 @@ describe('Редьюсер: FilmData', () => {
       isFetching: true,
       error: null,
     };
-    expect(filmData.reducer(state, loadFilmByIdSuccess(fakeFilm)))
+    expect(filmData.reducer(state, { type: loadFilmByIdAction.fulfilled.type, payload: fakeFilm }))
       .toEqual({
         film: fakeFilm,
         isFetching: false,
@@ -53,16 +58,17 @@ describe('Редьюсер: FilmData', () => {
       isFetching: false,
       error: null,
     };
+
     expect(
-      filmData.reducer(
-        state,
-        loadFilmByIdError({error: 'Sorry cant find that!'}),
-      ),
-    ).toEqual({
-      film: fakeFilm,
-      isFetching: false,
-      error: {error: 'Sorry cant find that!'},
-    });
+      filmData.reducer(state, { type: loadFilmByIdAction.rejected.type, payload: 'Sorry cant find that!'}))
+      .toEqual({
+        film: fakeFilm,
+        isFetching: false,
+        error: { error: 'Sorry cant find that!' },//???
+      });
+
+    const spy = jest.mock('../../services/error-handle');
+    expect(spy).toHaveBeenCalled();
   });
 
   it('должен перевести error в null', () => {

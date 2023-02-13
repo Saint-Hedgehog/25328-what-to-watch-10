@@ -1,10 +1,13 @@
-import {makeFakeComments} from '../../utils/mocks';
-import {
-  commentsData,
-  loadCommentsRequest,
-  loadCommentsSuccess,
-  loadCommentsError
-} from './comments-process';
+import { loadCommentsAction } from '../api-actions';
+import { commentsData } from './comments-process';
+import { makeFakeComments } from '../../utils/mocks';
+
+// import {
+//   commentsData,
+//   loadCommentsRequest,
+//   loadCommentsSuccess,
+//   loadCommentsError
+// } from './comments-process';
 
 const fakeComments = makeFakeComments();
 
@@ -22,7 +25,7 @@ describe('Редьюсер: CommentsData', () => {
       comments: [],
       isFetching: false,
     };
-    expect(commentsData.reducer(state, loadCommentsRequest()))
+    expect(commentsData.reducer(state, {type: loadCommentsAction.pending.type }))
       .toEqual({
         comments: [],
         isFetching: true,
@@ -34,10 +37,11 @@ describe('Редьюсер: CommentsData', () => {
       comments: [],
       isFetching: true,
     };
-    expect(commentsData.reducer(state, loadCommentsSuccess(fakeComments)),).toEqual({
-      comments: fakeComments,
-      isFetching: false,
-    });
+    expect(commentsData.reducer(state, { type: loadCommentsAction.fulfilled.type, payload: fakeComments }))
+      .toEqual({
+        comments: fakeComments,
+        isFetching: false,
+      });
   });
 
   it('при возникновении ошибки isFetching становится false', () => {
@@ -45,7 +49,7 @@ describe('Редьюсер: CommentsData', () => {
       comments: fakeComments,
       isFetching: true,
     };
-    expect(commentsData.reducer(state, loadCommentsError()))
+    expect(commentsData.reducer(state, {type: loadCommentsAction.rejected.type}))
       .toEqual({
         comments: fakeComments,
         isFetching: false,

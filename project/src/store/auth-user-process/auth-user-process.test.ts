@@ -1,10 +1,12 @@
 import {makeFakeUser} from '../../utils/mocks';
-import {
-  authUserProcess,
-  checkAuthorizationRequest,
-  checkAuthorizationError,
-  setUserData
-} from './auth-user-process';
+import { loginAction } from '../api-actions';
+import { authUserProcess } from './auth-user-process';
+// import {
+//   authUserProcess,
+//   checkAuthorizationRequest,
+//   checkAuthorizationError,
+//   setUserData
+// } from './auth-user-process';
 
 const fakeUser = makeFakeUser();
 
@@ -26,7 +28,7 @@ describe('Редьюсер: authUserProcess', () => {
       error: null,
       isFetching: false
     };
-    expect(authUserProcess.reducer(state, checkAuthorizationRequest()))
+    expect(authUserProcess.reducer(state, { type: loginAction.pending.type }))
       .toEqual(
         {
           user: null,
@@ -42,7 +44,7 @@ describe('Редьюсер: authUserProcess', () => {
       error: null,
       isFetching: true
     };
-    expect(authUserProcess.reducer(state, setUserData(fakeUser)))
+    expect(authUserProcess.reducer(state, { type: loginAction.fulfilled.type, payload: fakeUser }))
       .toEqual({
         user: fakeUser,
         error: null,
@@ -56,9 +58,7 @@ describe('Редьюсер: authUserProcess', () => {
       error: null,
       isFetching: true
     };
-    expect(authUserProcess.reducer(
-      state,
-      checkAuthorizationError({ error: 'Sorry cant find that!' })))
+    expect(authUserProcess.reducer( state, { type: loginAction.rejected.type }))
       .toEqual({
         user: fakeUser,
         error: {error: 'Sorry cant find that!'},

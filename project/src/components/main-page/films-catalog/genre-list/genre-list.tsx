@@ -31,24 +31,25 @@ function GenreList() {
   useEffect(() => {
     let genre = decodeURI(window.location.hash.replace('#', ''));
 
-    if (!genre) {
+    if (!genre || !uniqueGenres.some((item) => item.genre === genre)) {
       genre = DEFAULT_GANRE;
     }
 
     dispatch(changeGenre({genre}));
-  }, [dispatch, hashLocation]);
+  }, [dispatch, hashLocation, uniqueGenres]);
 
-  const filmList = uniqueGenres.slice(ZERO, COUNTE_UNIQUE_GENRES);
+  const genreList = uniqueGenres.slice(ZERO, COUNTE_UNIQUE_GENRES);
 
   return (
     <ul className="catalog__genres-list">
-      {filmList.map(({genre, id}) => (
+      {genreList.map(({genre, id}) => (
         <li
           key={id}
           onClick={handleGenreClick}
           className={classNames('catalog__genres-item', {
             'catalog__genres-item--active': genre === selectedGenre,
           })}
+          style={{pointerEvents: genre === selectedGenre ? 'none' : 'auto'}}
         >
           <Link
             to={`#${genre}`}

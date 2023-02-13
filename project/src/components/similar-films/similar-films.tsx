@@ -5,6 +5,7 @@ import {loadSimilarFilmsAction} from '../../store/api-actions';
 import {getSimilarFilms} from '../../store/similar-films-process/selectors';
 import {COUNT_SIMILAR_FILMS, ZERO} from '../../const';
 import SmallFilmCard from '../small-film-card/small-film-card';
+import React from 'react';
 
 type Props = {
   currentFilmId: number;
@@ -40,6 +41,7 @@ function SimilarFilms({currentFilmId}: Props) {
           {'catalog__title': isTitleVisible},
           {'visually-hidden': !isTitleVisible},
         )}
+        data-testid="catalog--like-this"
       >
         More like this
       </h2>
@@ -49,4 +51,4 @@ function SimilarFilms({currentFilmId}: Props) {
   );
 }
 
-export default SimilarFilms;
+export default React.memo(SimilarFilms);
